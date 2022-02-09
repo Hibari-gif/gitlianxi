@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-MybatisApplication<mybatis>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "kakin.demo.mybatis.MybatisApplication",
+            "projectName": "mybatis",
+            "args": ""
+        }
+    ]
+}

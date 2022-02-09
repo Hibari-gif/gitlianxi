@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kakin.demo.mybatis.repository.mapper.UserMapper">
+  <select id="selectUserById" resultType="kakin.demo.mybatis.repository.model.UserInfo">
+    SELECT 
+      ID AS userId
+      , NAME AS userName
+      , ADDRESS AS userAddress
+      , SEX AS userSex
+      , HOBBYID AS userHobbyId
+    FROM TBL_USER
+    WHERE ID = #{userId}
+  </select>
+
+  <delete id="deleteUserById">
+    DELETE
+    FROM TBL_USER
+    WHERE ID = #{userId}
+  </delete>
+
+  <select id="selectByName" resultType="kakin.demo.mybatis.repository.model.UserInfo">
+    SELECT 
+      ID AS userId
+      , NAME AS userName
+      , ADDRESS AS userAddress
+      , SEX AS userSex
+      , "" AS userHobbyId
+    FROM TBL_USER
+    WHERE NAME = #{name}
+    </select>
+    
+  <update id="updateAddressById">
+    UPDATE
+      TBL_USER
+    SET ADDRESS = #{userAddress}
+    WHERE ID = #{userId}
+  </update>
+  
+  <select id="selectAllUser" resultType="kakin.demo.mybatis.repository.model.UserInfo">
+    SELECT 
+      ID AS userId
+      , NAME AS userName
+      , ADDRESS AS userAddress
+      , SEX AS userSex
+      , HOBBYNAME AS userHobbyId
+    FROM TBL_USER,TBL_HOBBY
+    WHERE TBL_USER.HOBBYID = TBL_HOBBY.HOBBYID
+  </select>
+  
+  <select id="searchUserForManage" resultType="kakin.demo.mybatis.repository.model.UserInfo">
+    SELECT
+      USER.ID AS userId
+      , USER.NAME AS userName
+      , USER.ADDRESS AS userAddress
+      , USER.SEX AS userSex
+      , HOBBY.HOBBYNAME AS userHobbyId
+    FROM TBL_USER USER
+    LEFT OUTER JOIN TBL_HOBBY HOBBY
+    ON USER.HOBBYID = HOBBY.HOBBYID
+    WHERE 1 = 1
+    <if test="userId != null">
+      AND USER.ID = #{userId}
+    </if>
+    <if test="userName != null and userName != ''">
+      AND USER.NAME = #{userName}
+    </if>
+    <if test="userAddress != null and userAddress != ''">
+      AND USER.ADDRESS = #{userAddress}
+    </if>
+    <if test="userSex != null and userSex != ''">
+      AND USER.SEX = #{userSex}
+    </if>
+  </select>
+
+  <insert id="addUser">
+    INSERT INTO TBL_USER(NAME, ADDRESS, SEX, HOBBYID)
+    VALUES(#{userName}, #{userAddress}, #{userSex}, #{userHobbyId}) 
+  </insert>
+  
+  <select id="selectForLogin" resultType="kakin.demo.mybatis.dto.Users">
+    SELECT
+      ID AS id
+      ,USERNAME AS userName
+      ,PASSWORD AS password
+      ,ROLE AS role
+    FROM TBL_LOGIN
+    WHERE USERNAME = #{userName}
+  </select>
+  
+  <select id="selectRoleByUserId" resultType="kakin.demo.mybatis.dto.Role">
+    SELECT
+      R.ID AS id
+      ,R.NAME AS name
+    FROM ROLE R 
+    INNER JOIN TBL_LOGIN RU
+    ON RU.ROLE=R.ID
+    WHERE RU.ID = #{id}
+  </select>
+  
+  <select id="selectMenuByUserId" resultType="kakin.demo.mybatis.dto.Menu">
+    SELECT
+      M.ID AS id
+      ,M.NAME AS name
+      ,M.URL AS url
+      ,M.PARENTID AS parentId
+      ,M.PERMISSION AS permission
+    FROM MENU M
+    INNER JOIN ROLE_MENU RM ON M.ID = RM.MID
+    INNER JOIN ROLE R ON R.ID = RM.RID
+    INNER JOIN TBL_LOGIN RU ON R.ID = RU.ROLE
+    WHERE RU.ID = #{id}
+  </select>
+
+</mapper>
