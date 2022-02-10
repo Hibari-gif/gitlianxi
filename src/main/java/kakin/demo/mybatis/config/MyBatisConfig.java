@@ -25,6 +25,7 @@ public class MyBatisConfig {
     
     public static final String SQL_SESSION_TEMPLATE_NAME = "KakinSqlSessionTemplate";
 
+    //添加
     @Bean(SQL_SESSION_FACTORY_NAME)
     public SqlSessionFactoryBean sqlSessionFactory(DataSource dataSource) throws IOException {
 
