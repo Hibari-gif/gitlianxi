@@ -31,7 +31,7 @@ public class MyBatisConfig {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
         bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources(MAPPER_XML_PATH));
-
+//adadaas
         return bean;
     }
 
